@@ -6,6 +6,14 @@ def create_game_layout():
     root.title("Game Layout")
     root.geometry("1000x800")
 
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+
+    x_coordinate = (screen_width / 2) - (1000 / 2)
+    y_coordinate = (screen_height / 2) - (1000 / 2)
+
+    root.geometry(f"+{int(x_coordinate)}+{int(y_coordinate)}")
+
     top_menu = ttk.Frame(root, height=50, relief="groove", padding=5)
     top_menu.grid(row=0, column=0, columnspan=3, sticky="ew")
     ttk.Button(top_menu, text="Menu 1"). pack(side="left", padx=5)
