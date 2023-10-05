@@ -22,6 +22,12 @@ def create_game_layout():
     main_content.grid(row=1, column=1, sticky="nsew")
     ttk.Label(main_content, text="Main Content Area", font=("Arial", 16)).pack(pady=20)
 
+    right_sidebar = ttk.Frame(root, width=150, relief="groove", padding=5)
+    right_sidebar.grid(row=1, column=2, sticky="ns")
+    ttk.Label(right_sidebar, text="details/stats").pack(pady=5)
+    ttk.Label(right_sidebar, text="Info 1").pack(pady=5)
+    ttk.Label(right_sidebar, text="Info 2").pack(pady=5)
+
     
 
     root.mainloop()
