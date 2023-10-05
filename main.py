@@ -1,5 +1,6 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, PhotoImage
+from PIL import Image, ImageTk
 
 def create_game_layout():
     root =tk.Tk()
@@ -38,6 +39,25 @@ def create_game_layout():
     bottom_bar = ttk.Frame(root, height=50, relief="groove", padding=5)
     bottom_bar.grid(row=2, column=1, sticky="ew")
     ttk.Label(bottom_bar, text="Notification/COntrols").pack(pady=5)
+
+    enemy_image_paths = [
+        "pictures/enemy1.jpg",
+        "pictures/enemy2.jpg",
+        "pictures/enemy3.jpg",
+        "pictures/enemy4.jpg",
+        "pictures/enemy5.jpg",
+        "pictures/enemy6.jpg",
+        "pictures/enemy7.jpg",
+        "pictures/enemy8.jpg",
+        "pictures/enemy9.jpg",
+        "pictures/enemy10.jpg",
+    ]
+
+    enemy_images = [ImageTk.PhotoImage(Image.open(image_path)) for image_path in enemy_image_paths]
+
+    for i, enemy_image in enumerate(enemy_images):
+        enemy_btn = ttk.Button(main_content, image=enemy_image)
+        enemy_btn.grid(row=1//5, column=i%5, padx=10, pady=10)
 
     root.grid_rowconfigure(1, weight=1)
     root.grid_columnconfigure(1, weight=1)
