@@ -28,6 +28,13 @@ def create_game_layout():
     ttk.Label(right_sidebar, text="Info 1").pack(pady=5)
     ttk.Label(right_sidebar, text="Info 2").pack(pady=5)
 
-    
+    bottom_bar = ttk.Frame(root, height=50, relief="groove", padding=5)
+    bottom_bar.grid(row=2, column=1, sticky="ew")
+    ttk.Label(bottom_bar, text="Notification/COntrols").pack(pady=5)
+
+    root.grid_rowconfigure(1, weight=1)
+    root.grid_columnconfigure(1, weight=1)
 
     root.mainloop()
+
+create_game_layout()
