@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import ttk, PhotoImage
 from PIL import Image, ImageTk
 
+
+
 def create_game_layout():
     root =tk.Tk()
     root.title("Game Layout")
@@ -26,9 +28,9 @@ def create_game_layout():
     for i in range(1, 9):
         ttk.Button(left_sidebar, text=f"Item {i}").pack(pady=5)
 
-    main_content = ttk.Frame(root, relief="groove", padding=5)
+    main_content = tk.Frame(root, relief="groove", bg="white")
     main_content.grid(row=1, column=1, sticky="nsew")
-    ttk.Label(main_content, text="Main Content Area", font=("Arial", 16)).pack(pady=20)
+    ttk.Label(main_content, text="Main Content Area", font=("Arial", 16)).grid(row=0, column=0, columnspan=5, pady=20)
 
     right_sidebar = ttk.Frame(root, width=150, relief="groove", padding=5)
     right_sidebar.grid(row=1, column=2, sticky="ns")
@@ -38,7 +40,7 @@ def create_game_layout():
 
     bottom_bar = ttk.Frame(root, height=50, relief="groove", padding=5)
     bottom_bar.grid(row=2, column=1, sticky="ew")
-    ttk.Label(bottom_bar, text="Notification/COntrols").pack(pady=5)
+    ttk.Label(bottom_bar, text="Notification/Controls").pack(pady=5)
 
     enemy_image_paths = [
         "pictures/enemy1.jpg",
@@ -53,11 +55,14 @@ def create_game_layout():
         "pictures/enemy10.jpg",
     ]
 
-    enemy_images = [ImageTk.PhotoImage(Image.open(image_path)) for image_path in enemy_image_paths]
+    cm_to_pixel = 37.8
+    size = (int(3.5 * cm_to_pixel), int(4 * cm_to_pixel))
+
+    enemy_images = [ImageTk.PhotoImage(Image.open(image_path).resize(size)) for image_path in enemy_image_paths]
 
     for i, enemy_image in enumerate(enemy_images):
         enemy_btn = ttk.Button(main_content, image=enemy_image)
-        enemy_btn.grid(row=1//5, column=i%5, padx=10, pady=10)
+        enemy_btn.grid(row=(i // 5) + 1, column=i % 5, padx=10, pady=10)
 
     root.grid_rowconfigure(1, weight=1)
     root.grid_columnconfigure(1, weight=1)
