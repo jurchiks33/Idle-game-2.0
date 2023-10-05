@@ -8,10 +8,11 @@ def highlight_enemy(event):
     global current_pressed_enemy
     
     if current_pressed_enemy:
-        current_pressed_enemy.config(relief="raised", borderwidth=1)
-
+        current_pressed_enemy.config(highlightbackground="white", highlightthickness=1)
+    
+    # Update the appearance of the clicked enemy
     current_pressed_enemy = event.widget
-    current_pressed_enemy.config(relief="sunken", borderwidth=3)
+    current_pressed_enemy.config(highlightbackground="red", highlightthickness=2)
 
 def create_game_layout():
     root =tk.Tk()
@@ -70,14 +71,10 @@ def create_game_layout():
     enemy_images = [ImageTk.PhotoImage(Image.open(image_path).resize(size)) for image_path in enemy_image_paths]
 
     for i, enemy_image in enumerate(enemy_images):
-        enemy_btn = ttk.Button(main_content, image=enemy_image)
-        enemy_btn.grid(row=(i // 5) + 1, column=i % 5, padx=10, pady=10)
-        enemy_btn.bind("<Button-1>", highlight_enemy)
-    
-    for i, enemy_image in enumerate(enemy_images):
-        enemy_btn = tk.Button(main_content, image=enemy_image)
-        enemy_btn.grid(row=(i // 5) + 1, column=i % 5, padx=10, pady=10)
-        enemy_btn.bind("<Button-1>", highlight_enemy)
+        canvas = tk.Canvas(main_content, width=size[0], height=size[1], bd=0, highlightthickness=1)
+        canvas.create_image(size[0]//2, size[1]//2, image=enemy_image)
+        canvas.grid(row=(i // 5) + 1, column=i % 5, padx=10, pady=10)
+        canvas.bind("<Button-1>", highlight_enemy)
 
     root.grid_rowconfigure(1, weight=1)
     root.grid_columnconfigure(1, weight=1)
