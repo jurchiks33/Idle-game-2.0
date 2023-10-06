@@ -13,7 +13,6 @@ def highlight_enemy(event):
     if current_pressed_enemy:
         current_pressed_enemy.config(highlightbackground="white", highlightthickness=1)
     
-    # Update the appearance of the clicked enemy
     current_pressed_enemy = event.widget
     current_pressed_enemy.config(highlightbackground="red", highlightthickness=2)
 
@@ -84,13 +83,16 @@ def create_game_layout():
 
     enemy_images = [ImageTk.PhotoImage(Image.open(image_path).resize(size)) for image_path in enemy_image_paths]
 
-    
-
+    enemy_healths = {}
+    max_health = 600
     for i, enemy_image in enumerate(enemy_images):
         canvas = tk.Canvas(main_content, width=size[0], height=size[1], bd=0, highlightthickness=1)
         canvas.create_image(size[0]//2, size[1]//2, image=enemy_image)
         canvas.grid(row=(i // 5) + 1, column=i % 5, padx=10, pady=10)
         canvas.bind("<Button-1>", highlight_enemy)
+
+        health = (i+1) * 50 if (i+1) * 50 <= max_health else max_health
+        enemy_healths[canvas] = health
 
     root.grid_rowconfigure(1, weight=1)
     root.grid_columnconfigure(1, weight=1)
