@@ -84,6 +84,8 @@ def create_game_layout():
 
     enemy_images = [ImageTk.PhotoImage(Image.open(image_path).resize(size)) for image_path in enemy_image_paths]
 
+    
+
     for i, enemy_image in enumerate(enemy_images):
         canvas = tk.Canvas(main_content, width=size[0], height=size[1], bd=0, highlightthickness=1)
         canvas.create_image(size[0]//2, size[1]//2, image=enemy_image)
