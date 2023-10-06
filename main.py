@@ -77,6 +77,11 @@ def create_game_layout():
         "pictures/enemy8.jpg",
         "pictures/enemy9.jpg",
         "pictures/enemy10.jpg",
+        "pictures/enemy11.jpg",
+        "pictures/enemy12.jpg",
+        "pictures/enemy13.jpg",
+        "pictures/enemy14.jpg",
+        "pictures/enemy15.jpg",
     ]
 
     cm_to_pixel = 37.8
