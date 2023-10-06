@@ -5,7 +5,7 @@ from PIL import Image, ImageTk
 current_pressed_enemy = None
 
 def highlight_enemy(event):
-    global current_pressed_enemy
+    global current_pressed_enemy, health_bar, health_label, bottom_bar, enemy_healths, max_health
     
     health_bar.place_forget()
     health_label.place_forget()
@@ -28,6 +28,8 @@ def create_game_layout():
     root =tk.Tk()
     root.title("Game Layout")
     root.geometry("1000x800")
+
+    global bottom_bar, health_bar, health_label, enemy_healths, max_health  
 
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
