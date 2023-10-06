@@ -3,6 +3,7 @@ from tkinter import ttk, PhotoImage
 from PIL import Image, ImageTk
 
 current_pressed_enemy = None
+current_pressed_sidebar_button = None
 
 def highlight_enemy(event):
     global current_pressed_enemy, health_bar, health_label, bottom_bar, enemy_healths, max_health
@@ -22,6 +23,17 @@ def highlight_enemy(event):
         health_bar.place(x=0, y=0, width=health_bar_width, height=bottom_bar.winfo_height())
         health_label.config(text=str(enemy_health))
         health_label.place(relx=0.5, rely=0.5, anchor='center')
+
+def sidebar_button_click(event):
+    global current_pressed_sidebar_button
+
+    if current_pressed_sidebar_button:
+        current_pressed_sidebar_button.config(background="SystemButtonFace")
+    
+    button = event.widget
+    button.config(background="green")
+
+    current_pressed_sidebar_button = button
 
 def create_game_layout():
     root =tk.Tk()
@@ -47,7 +59,9 @@ def create_game_layout():
     left_sidebar = ttk.Frame(root, width=150, relief="groove", padding=5)
     left_sidebar.grid(row=1, column=0, rowspan=2, sticky="ns")
     for i in range(1, 9):
-        ttk.Button(left_sidebar, text=f"Item {i}").pack(pady=5)
+        button = tk.Button(left_sidebar, text=f"Item {i}", width=20)
+        button.pack(pady=5)
+        button.bind("<Button-1>", sidebar_button_click)
 
     main_content = tk.Frame(root, relief="groove", bg="white")
     main_content.grid(row=1, column=1, sticky="nsew")
