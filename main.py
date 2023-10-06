@@ -7,12 +7,23 @@ current_pressed_enemy = None
 def highlight_enemy(event):
     global current_pressed_enemy
     
+    health_bar.place_forget()
+    health_label.place_forget()
+
     if current_pressed_enemy:
         current_pressed_enemy.config(highlightbackground="white", highlightthickness=1)
     
     # Update the appearance of the clicked enemy
     current_pressed_enemy = event.widget
     current_pressed_enemy.config(highlightbackground="red", highlightthickness=2)
+
+    enemy_health = enemy_healths.get(current_pressed_enemy)
+    if enemy_health:
+        health_percentage = enemy_health / max_health
+        health_bar_width = int(bottom_bar.winfo_width() * health_percentage)
+        health_bar.place(x=0, y=0, width=health_bar_width, height=bottom_bar.winfo_height())
+        health_label.config(text=str(enemy_health))
+        health_label.place(relx=0.5, rely=0.5, anchor='center')
 
 def create_game_layout():
     root =tk.Tk()
