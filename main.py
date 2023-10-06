@@ -63,6 +63,9 @@ def create_game_layout():
     bottom_bar.grid(row=2, column=1, sticky="ew")
     ttk.Label(bottom_bar, text="Notification/Controls").pack(pady=5)
 
+    health_bar = tk.Canvas(bottom_bar, bg="red", bd=0, highlightthickness=0)
+    health_label = ttk.Label(bottom_bar, font=("Arial", 14), background="red", foreground="white")
+
     enemy_image_paths = [
         "pictures/enemy1.jpg",
         "pictures/enemy2.jpg",
