@@ -38,7 +38,7 @@ def sidebar_button_click(event):
 def create_game_layout():
     root =tk.Tk()
     root.title("Game Layout")
-    root.geometry("1000x800")
+    root.geometry("1050x800")
 
     global bottom_bar, health_bar, health_label, enemy_healths, max_health  
 
@@ -58,8 +58,13 @@ def create_game_layout():
 
     left_sidebar = ttk.Frame(root, width=150, relief="groove", padding=5)
     left_sidebar.grid(row=1, column=0, rowspan=2, sticky="ns")
-    for i in range(1, 9):
-        button = tk.Button(left_sidebar, text=f"Item {i}", width=20)
+
+    skill_names = ["Sword", "Bow", "Magic", "Shield", "Stealth", "Healing", "Alchemy", "Archery", "Summoning"]
+    skill_values = [1 for _ in skill_names]
+
+    for i, (skill_name, skill_value) in enumerate(zip(skill_names, skill_values)):
+        button_text = f"{skill_name} ({skill_value})"
+        button = tk.Button(left_sidebar, text=button_text, width=25)
         button.pack(pady=5)
         button.bind("<Button-1>", sidebar_button_click)
 
