@@ -121,7 +121,8 @@ def create_game_layout_with_progression():
             enemy_health -= player_damage
             if enemy_health <= 0:
                 enemy_health = 0
-                skill_increase = max(1, round(0.05 * enemy_healths[current_pressed_enemy]))  
+                enemy_index = list(enemy_healths).index(current_pressed_enemy) + 1
+                skill_increase = max(enemy_index, round(0.01 * enemy_healths[current_pressed_enemy]))  
                 player_skill += skill_increase
                 print(f"New player skill after defeating enemy: {player_skill}")  
                 player_damage = player_skill * 1
