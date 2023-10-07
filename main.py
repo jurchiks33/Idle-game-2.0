@@ -76,7 +76,8 @@ def create_game_layout_with_progression():
         enemy_healths_value = 250
         for canvas in enemy_healths:
             enemy_healths[canvas] = round(enemy_healths_value)
-            enemy_healths_value *= 1.5
+            enemy_healths_value *= 2.5
+            canvas.bind("<Button-1>", highlight_enemy)
         
         if current_pressed_enemy:
             enemy_health = enemy_healths.get(current_pressed_enemy)
@@ -120,7 +121,7 @@ def create_game_layout_with_progression():
             enemy_health -= player_damage
             if enemy_health <= 0:
                 enemy_health = 0
-                skill_increase = max(1, round(0.0005 * enemy_healths[current_pressed_enemy]))  
+                skill_increase = max(1, round(0.05 * enemy_healths[current_pressed_enemy]))  
                 player_skill += skill_increase
                 print(f"New player skill after defeating enemy: {player_skill}")  
                 player_damage = player_skill * 1
@@ -183,7 +184,7 @@ def create_game_layout_with_progression():
         canvas.bind("<Button-1>", highlight_enemy)
 
         enemy_healths[canvas] = round(enemy_healths_value)
-        enemy_healths_value *= 1.5
+        enemy_healths_value *= 2.5
 
     root.grid_rowconfigure(1, weight=1)
     root.grid_columnconfigure(1, weight=1)
