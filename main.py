@@ -44,7 +44,7 @@ def create_game_layout_with_progression():
     global player_skill, player_damage
 
     player_skill = 1
-    player_damage = 50
+    player_damage = player_skill
 
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
@@ -70,7 +70,14 @@ def create_game_layout_with_progression():
     skill_names = ["attack"]
     skill_values = [player_skill]
 
-    reset_button = tk.Button(root, text="RESET", bg="orange", command=None, font=("Arial", 16), padx=-9, anchor="e")
+    def reset_enemy_healths():
+        global enemy_healths
+        enemy_healths_value = 250
+        for canvas in enemy_healths:
+            enemy_healths[canvas] = round(enemy_healths_value)
+            enemy_healths_value *= 1.5
+
+    reset_button = tk.Button(root, text="RESET", bg="orange", command=reset_enemy_healths, font=("Arial", 16), padx=-9, anchor="e")
     reset_button.place(relx=1.0, rely=1.0, anchor="se", x=0, y=0)
 
     skill_buttons = []
@@ -101,11 +108,11 @@ def create_game_layout_with_progression():
 
         enemy_health = enemy_healths.get(current_pressed_enemy)
         if enemy_health:
-            print(f"Attacking with damage: {player_damage}")
             enemy_health -= player_damage
             if enemy_health <= 0:
-                enemy_health = 0  
-                player_skill += 1  
+                enemy_health = 0
+                skill_increase = max(1, round(0.0005 * enemy_healths[current_pressed_enemy]))  
+                player_skill += skill_increase
                 print(f"New player skill after defeating enemy: {player_skill}")  
                 player_damage = player_skill * 1
                 update_skill_value()
