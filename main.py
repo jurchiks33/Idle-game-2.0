@@ -35,12 +35,16 @@ def sidebar_button_click(event):
 
     current_pressed_sidebar_button = button
 
-def create_game_layout():
+def create_game_layout_with_progression():
     root =tk.Tk()
     root.title("Game Layout")
     root.geometry("1050x800")
 
-    global bottom_bar, health_bar, health_label, enemy_healths, max_health  
+    global bottom_bar, health_bar, health_label, enemy_healths, max_health, current_pressed_sidebar_button  
+    global player_skill, player_damage
+
+    player_skill = 1
+    player_damage = 50
 
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
@@ -56,17 +60,59 @@ def create_game_layout():
     ttk.Button(top_menu, text="Menu 2"). pack(side="left", padx=5)
     ttk.Button(top_menu, text="Menu 3"). pack(side="left", padx=5)
 
+    style = ttk.Style()
+    style.configure('TFrame', background='#FCE6C9')
+    style.configure('TButton', background='#FCE6C9', foreground='black')
+
     left_sidebar = ttk.Frame(root, width=150, relief="groove", padding=5)
     left_sidebar.grid(row=1, column=0, rowspan=2, sticky="ns")
 
-    skill_names = ["Sword", "Bow", "Magic", "Shield", "Stealth", "Healing", "Alchemy", "Archery", "Summoning"]
-    skill_values = [1 for _ in skill_names]
+    skill_names = ["attack"]
+    skill_values = [player_skill]
 
+    reset_button = tk.Button(root, text="RESET", bg="orange", command=None, font=("Arial", 16), padx=-9, anchor="e")
+    reset_button.place(relx=1.0, rely=1.0, anchor="se", x=0, y=0)
+
+    skill_buttons = []
     for i, (skill_name, skill_value) in enumerate(zip(skill_names, skill_values)):
         button_text = f"{skill_name} ({skill_value})"
         button = tk.Button(left_sidebar, text=button_text, width=25)
         button.pack(pady=5)
         button.bind("<Button-1>", sidebar_button_click)
+        skill_buttons.append(button)
+
+    def update_skill_value():
+        skill_buttons[0].config(text=f"Attack ({player_skill})")
+
+    def highlight_enemy(event):
+        global current_pressed_enemy, health_bar, health_label, bottom_bar, enemy_healths, max_health
+        global player_skill, player_damage
+
+        health_bar.place_forget()
+        health_label.place_forget()
+
+        if current_pressed_enemy:
+            current_pressed_enemy.config(highlightbackground="white", highlightthickness=1)
+
+        current_pressed_enemy = event.widget
+        current_pressed_enemy.config(highlightbackground="red", highlightthickness=2)
+
+        enemy_health = enemy_healths.get(current_pressed_enemy)
+        if enemy_health:
+            enemy_health -= player_damage
+            if enemy_health <= 0:
+                player_skill *= 1.20
+                player_skill = round(player_skill)
+                player_damage = player_skill * 50
+                update_skill_value()
+                current_pressed_enemy.config(state=tk.DISABLED)
+            else:
+                enemy_healths[current_pressed_enemy] = enemy_health
+
+            health_bar_width = bottom_bar.winfo_width()  
+            health_bar.place(x=0, y=0, width=health_bar_width, height=bottom_bar.winfo_height())
+            health_label.config(text=str(enemy_health))
+            health_label.place(relx=0.5, rely=0.5, anchor='center')
 
     main_content = tk.Frame(root, relief="groove", bg="white")
     main_content.grid(row=1, column=1, sticky="nsew")
