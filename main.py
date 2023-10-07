@@ -71,11 +71,20 @@ def create_game_layout_with_progression():
     skill_values = [player_skill]
 
     def reset_enemy_healths():
-        global enemy_healths
+        global enemy_healths, current_pressed_enemy, health_bar, health_label, bottom_bar
+
         enemy_healths_value = 250
         for canvas in enemy_healths:
             enemy_healths[canvas] = round(enemy_healths_value)
             enemy_healths_value *= 1.5
+        
+        if current_pressed_enemy:
+            enemy_health = enemy_healths.get(current_pressed_enemy)
+        if enemy_health:
+            health_bar_width = bottom_bar.winfo_width()  
+            health_bar.place(x=0, y=0, width=health_bar_width, height=bottom_bar.winfo_height())
+            health_label.config(text=str(enemy_health))
+            health_label.place(relx=0.5, rely=0.5, anchor='center')
 
     reset_button = tk.Button(root, text="RESET", bg="orange", command=reset_enemy_healths, font=("Arial", 16), padx=-9, anchor="e")
     reset_button.place(relx=1.0, rely=1.0, anchor="se", x=0, y=0)
