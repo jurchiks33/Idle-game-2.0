@@ -104,12 +104,12 @@ def create_game_layout_with_progression():
             print(f"Attacking with damage: {player_damage}")
             enemy_health -= player_damage
             if enemy_health <= 0:
-                enemy_health = 0
-                player_skill *= 1.20
-                player_skill = round(player_skill)
-                player_damage = player_skill * 50
+                enemy_health = 0  
+                player_skill += 1  
+                print(f"New player skill after defeating enemy: {player_skill}")  
+                player_damage = player_skill * 1
                 update_skill_value()
-                current_pressed_enemy.config(state=tk.DISABLED)
+                current_pressed_enemy.unbind("<Button-1>")
             else:
                 enemy_healths[current_pressed_enemy] = enemy_health
 
