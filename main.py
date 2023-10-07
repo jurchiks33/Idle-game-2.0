@@ -170,4 +170,4 @@ def create_game_layout_with_progression():
 
     root.mainloop()
 
-create_game_layout()
+create_game_layout_with_progression()
