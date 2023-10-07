@@ -23,6 +23,7 @@ def highlight_enemy(event):
         health_bar.place(x=0, y=0, width=health_bar_width, height=bottom_bar.winfo_height())
         health_label.config(text=str(enemy_health))
         health_label.place(relx=0.5, rely=0.5, anchor='center')
+        
 
 def sidebar_button_click(event):
     global current_pressed_sidebar_button
@@ -42,7 +43,7 @@ def create_game_layout_with_progression():
 
     global bottom_bar, health_bar, health_label, enemy_healths, max_health, current_pressed_sidebar_button  
     global player_skill, player_damage
-
+    
     player_skill = 1
     player_damage = player_skill
 
