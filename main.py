@@ -82,7 +82,9 @@ def create_game_layout_with_progression():
         skill_buttons.append(button)
 
     def update_skill_value():
+        print(f"Updating skill to: {player_skill}")
         skill_buttons[0].config(text=f"Attack ({player_skill})")
+
 
     def highlight_enemy(event):
         global current_pressed_enemy, health_bar, health_label, bottom_bar, enemy_healths, max_health
@@ -99,8 +101,10 @@ def create_game_layout_with_progression():
 
         enemy_health = enemy_healths.get(current_pressed_enemy)
         if enemy_health:
+            print(f"Attacking with damage: {player_damage}")
             enemy_health -= player_damage
             if enemy_health <= 0:
+                enemy_health = 0
                 player_skill *= 1.20
                 player_skill = round(player_skill)
                 player_damage = player_skill * 50
