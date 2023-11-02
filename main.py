@@ -47,7 +47,26 @@ def attack_enemy():
         print("Selected enemy does not have recorded health!")
         return
 
+    enemy_health -= player_damage
+    if enemy_health <= 0:
+        enemy_health = 0
+        enemy_index = list(enemy_healths).index(current_pressed_enemy) + 1
+        skill_increase = max(enemy_index, round(0.01 * enemy_healths[current_pressed_enemy]))
+        player_skill += skill_increase
+        print(f"New player skill after defeating enemy: {player_skill}")
+        player_damage = player_skill * 1
+        update_skill_value()
+        current_pressed_enemy.unbind("<Button-1>")
+    else:
+        enemy_healths[current_pressed_enemy] = enemy_health
     
+    update_enemy_health_display(enemy_health)
+
+def update_enemy_health_display(enemy_health):
+    health_bar_width = bottom_bar.winfo_width()
+    health_bar.place(x=0, y=0, width=health_bar_width, height=bottom_bar.winfo_height())
+    health_label.config(text=str(enemy_health))
+    health_label.place(relx=0.5, rely=0.5, anchor='center')
 
 def create_game_layout_with_progression():
     root =tk.Tk()
@@ -103,6 +122,9 @@ def create_game_layout_with_progression():
 
     reset_button = tk.Button(root, text="RESET", bg="orange", command=reset_enemy_healths, font=("Arial", 16), padx=-9, anchor="e")
     reset_button.place(relx=1.0, rely=1.0, anchor="se", x=0, y=0)
+
+    attack_button = tk.Button(root, text="Attack", bg="red", command=attack_enemy, font=("Arial", 16))
+    attack_button.place(relx=0.01, rely=0.01, anchor="nw")
 
     skill_buttons = []
     for i, (skill_name, skill_value) in enumerate(zip(skill_names, skill_values)):
