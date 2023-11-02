@@ -36,6 +36,19 @@ def sidebar_button_click(event):
 
     current_pressed_sidebar_button = button
 
+def attack_enemy():
+    global current_pressed_enemy, enemy_healths, player_skill, player_damage
+    if current_pressed_enemy is None:
+        print("No enemy selected!")
+        return
+    
+    enemy_health = enemy_healths.get(current_pressed_enemy)
+    if enemy_health is None:
+        print("Selected enemy does not have recorded health!")
+        return
+
+    
+
 def create_game_layout_with_progression():
     root =tk.Tk()
     root.title("Game Layout")
