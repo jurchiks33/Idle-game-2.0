@@ -39,6 +39,10 @@ def sidebar_button_click(event):
 
     current_pressed_sidebar_button = button
 
+def update_skill_value():
+    print(f"Updating skill to: {player_skill}")
+    skill_buttons[0].config(text=f"Attack ({player_skill})")
+
 def attack_enemy():
     global current_pressed_enemy, enemy_healths, player_skill, player_damage
     if current_pressed_enemy is None:
@@ -153,9 +157,7 @@ def create_game_layout_with_progression():
         button.bind("<Button-1>", sidebar_button_click)
         skill_buttons.append(button)
 
-    def update_skill_value():
-        print(f"Updating skill to: {player_skill}")
-        skill_buttons[0].config(text=f"Attack ({player_skill})")
+
 
 
     def highlight_enemy(event):
