@@ -84,7 +84,7 @@ def update_enemy_health_display(enemy_health):
 def auto_attack():
     global auto_attack_id
     attack_enemy()  
-    auto_attack_id = root.after(1000, auto_attack)  
+    auto_attack_id = root.after(10, auto_attack)  
 
 def start_auto_attack():
     global auto_attack_id
@@ -154,7 +154,7 @@ def create_game_layout_with_progression():
     reset_button = tk.Button(root, text="RESET", bg="orange", command=reset_enemy_healths, font=("Arial", 16), padx=-9, anchor="e")
     reset_button.place(relx=1.0, rely=1.0, anchor="se", x=0, y=0)
 
-    attack_button = tk.Button(root, text="Attack", bg="red", command=attack_enemy, font=("Arial", 16))
+    attack_button = tk.Button(root, text="Attack", bg="red", command=start_auto_attack, font=("Arial", 16))
     attack_button.place(relx=0.01, rely=0.01, anchor="nw")
 
     skill_buttons = []
