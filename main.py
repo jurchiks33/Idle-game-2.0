@@ -76,6 +76,12 @@ def  start_auto_attack():
     if auto_attack_id is None:
         auto_attack()
 
+def stop_auto_attack():
+    global auto_attack_id
+    if auto_attack_id is not None:
+        root.after_cancel(auto_attack_id)
+        auto_attack_id = None
+
 
 
 def create_game_layout_with_progression():
