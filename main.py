@@ -9,6 +9,7 @@ current_pressed_sidebar_button = None
 auto_attack_id = None
 
 skill_buttons = []
+root = None
 
 def highlight_enemy(event):
     global current_pressed_enemy, health_bar, health_label, bottom_bar, enemy_healths, max_health
@@ -91,13 +92,14 @@ def start_auto_attack():
         auto_attack()  
 
 def stop_auto_attack():
-    global auto_attack_id
+    global auto_attack_id, root  
     if auto_attack_id is not None:
         root.after_cancel(auto_attack_id)
         auto_attack_id = None
 
 def create_game_layout_with_progression():
     global skill_buttons
+    global root
     root =tk.Tk()
     root.title("Game Layout")
     root.geometry("1050x800")
