@@ -5,7 +5,7 @@ from PIL import Image, ImageTk
 current_pressed_enemy = None
 player_skill = 1
 player_damage = player_skill
-# current_pressed_sidebar_button = None
+current_pressed_sidebar_button = None
 auto_attack_id = None
 
 def highlight_enemy(event):
@@ -71,21 +71,21 @@ def update_enemy_health_display(enemy_health):
     health_label.config(text=str(enemy_health))
     health_label.place(relx=0.5, rely=0.5, anchor='center')
 
-def  start_auto_attack():
+def auto_attack():
+    global auto_attack_id
+    attack_enemy()  
+    auto_attack_id = root.after(1000, auto_attack)  
+
+def start_auto_attack():
     global auto_attack_id
     if auto_attack_id is None:
-        auto_attack()
+        auto_attack()  
 
 def stop_auto_attack():
     global auto_attack_id
     if auto_attack_id is not None:
         root.after_cancel(auto_attack_id)
         auto_attack_id = None
-
-def auto_attack():
-    global auto_attack_id
-    attack_enemy()
-    auto_attack_id = root.after(1000, auto_attack)
 
 def create_game_layout_with_progression():
     root =tk.Tk()
