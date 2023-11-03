@@ -3,7 +3,10 @@ from tkinter import ttk, PhotoImage
 from PIL import Image, ImageTk
 
 current_pressed_enemy = None
-current_pressed_sidebar_button = None
+player_skill = 1
+player_damage = player_skill
+# current_pressed_sidebar_button = None
+auto_attack_id = None
 
 def highlight_enemy(event):
     global current_pressed_enemy, health_bar, health_label, bottom_bar, enemy_healths, max_health
@@ -68,6 +71,13 @@ def update_enemy_health_display(enemy_health):
     health_label.config(text=str(enemy_health))
     health_label.place(relx=0.5, rely=0.5, anchor='center')
 
+def  start_auto_attack():
+    global auto_attack_id
+    if auto_attack_id is None:
+        auto_attack()
+
+
+
 def create_game_layout_with_progression():
     root =tk.Tk()
     root.title("Game Layout")
@@ -87,11 +97,11 @@ def create_game_layout_with_progression():
 
     root.geometry(f"+{int(x_coordinate)}+{int(y_coordinate)}")
 
-    top_menu = ttk.Frame(root, height=50, relief="groove", padding=5)
-    top_menu.grid(row=0, column=0, columnspan=3, sticky="ew")
-    ttk.Button(top_menu, text="Menu 1"). pack(side="left", padx=5)
-    ttk.Button(top_menu, text="Menu 2"). pack(side="left", padx=5)
-    ttk.Button(top_menu, text="Menu 3"). pack(side="left", padx=5)
+    bottom_bar = ttk.Frame(root, height=50, relief="groove", padding=5)
+    bottom_bar.grid(row=2, column=1, sticky="ew")
+    ttk.Button(bottom_bar, text="Auto Attack", command=start_auto_attack).pack(side="left", padx=20)
+    ttk.Button(bottom_bar, text="Stop Auto Attack", command=stop_auto_attack).pack(side="left", padx=20)
+    ttk.Label(bottom_bar, text="Notification/Controls").pack(pady=5)
 
     style = ttk.Style()
     style.configure('TFrame', background='#FCE6C9')
