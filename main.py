@@ -82,7 +82,10 @@ def stop_auto_attack():
         root.after_cancel(auto_attack_id)
         auto_attack_id = None
 
-
+def auto_attack():
+    global auto_attack_id
+    attack_enemy()
+    auto_attack_id = root.after(1000, auto_attack)
 
 def create_game_layout_with_progression():
     root =tk.Tk()
