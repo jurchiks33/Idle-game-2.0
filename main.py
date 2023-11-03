@@ -7,9 +7,9 @@ player_skill = 1
 player_damage = player_skill
 current_pressed_sidebar_button = None
 auto_attack_id = None
-
 skill_buttons = []
 root = None
+attack_button = None
 
 def highlight_enemy(event):
     global current_pressed_enemy, health_bar, health_label, bottom_bar, enemy_healths, max_health
@@ -63,6 +63,7 @@ def attack_enemy():
     enemy_health -= player_damage
     if enemy_health <= 0:
         enemy_health = 0
+        stop_auto_attack() 
         enemy_index = list(enemy_healths).index(current_pressed_enemy) + 1
         skill_increase = max(enemy_index, round(0.01 * enemy_healths[current_pressed_enemy]))
         player_skill += skill_increase
@@ -86,13 +87,24 @@ def auto_attack():
     attack_enemy()  
     auto_attack_id = root.after(10, auto_attack)  
 
+def toggle_auto_attack():
+    global auto_attack_id
+    if auto_attack_id is None:
+        start_auto_attack()
+        if attack_button:
+            attack_button.config(bg="red")
+    else:
+        stop_auto_attack()
+        if attack_button:
+            attack_button.config(bg="green")
+
 def start_auto_attack():
     global auto_attack_id
     if auto_attack_id is None:
-        auto_attack()  
+        auto_attack()
 
 def stop_auto_attack():
-    global auto_attack_id, root  
+    global auto_attack_id
     if auto_attack_id is not None:
         root.after_cancel(auto_attack_id)
         auto_attack_id = None
@@ -154,7 +166,7 @@ def create_game_layout_with_progression():
     reset_button = tk.Button(root, text="RESET", bg="orange", command=reset_enemy_healths, font=("Arial", 16), padx=-9, anchor="e")
     reset_button.place(relx=1.0, rely=1.0, anchor="se", x=0, y=0)
 
-    attack_button = tk.Button(root, text="Attack", bg="red", command=start_auto_attack, font=("Arial", 16))
+    attack_button = tk.Button(root, text="Attack", bg="green", command=toggle_auto_attack, font=("Arial", 16))
     attack_button.place(relx=0.01, rely=0.01, anchor="nw")
 
     skill_buttons = []
