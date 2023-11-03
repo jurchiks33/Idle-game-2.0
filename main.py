@@ -8,6 +8,8 @@ player_damage = player_skill
 current_pressed_sidebar_button = None
 auto_attack_id = None
 
+skill_buttons = []
+
 def highlight_enemy(event):
     global current_pressed_enemy, health_bar, health_label, bottom_bar, enemy_healths, max_health
     
@@ -40,9 +42,12 @@ def sidebar_button_click(event):
     current_pressed_sidebar_button = button
 
 def update_skill_value():
+    global skill_buttons  
     print(f"Updating skill to: {player_skill}")
-    skill_buttons[0].config(text=f"Attack ({player_skill})")
-
+    if skill_buttons: 
+        skill_buttons[0].config(text=f"Attack ({player_skill})")
+    else:
+        print("Skill buttons have not been created yet.")
 def attack_enemy():
     global current_pressed_enemy, enemy_healths, player_skill, player_damage
     if current_pressed_enemy is None:
@@ -92,6 +97,7 @@ def stop_auto_attack():
         auto_attack_id = None
 
 def create_game_layout_with_progression():
+    global skill_buttons
     root =tk.Tk()
     root.title("Game Layout")
     root.geometry("1050x800")
