@@ -9,27 +9,7 @@ current_pressed_sidebar_button = None
 auto_attack_id = None
 skill_buttons = []
 root = None
-attack_button = None
-
-# def highlight_enemy(event):
-#     global current_pressed_enemy, health_bar, health_label, bottom_bar, enemy_healths, max_health
-    
-#     health_bar.place_forget()
-#     health_label.place_forget()
-
-#     if current_pressed_enemy:
-#         current_pressed_enemy.config(highlightbackground="white", highlightthickness=1)
-    
-#     current_pressed_enemy = event.widget
-#     current_pressed_enemy.config(highlightbackground="red", highlightthickness=2)
-
-#     enemy_health = enemy_healths.get(current_pressed_enemy)
-#     if enemy_health:
-#         health_bar_width = bottom_bar.winfo_width()  
-#         health_bar.place(x=0, y=0, width=health_bar_width, height=bottom_bar.winfo_height())
-#         health_label.config(text=str(enemy_health))
-#         health_label.place(relx=0.5, rely=0.5, anchor='center')
-        
+attack_button = None        
 
 def sidebar_button_click(event):
     global current_pressed_sidebar_button
@@ -50,32 +30,6 @@ def update_skill_value():
     else:
         print("Skill buttons have not been created yet.")
 
-# def attack_enemy():
-#     global current_pressed_enemy, enemy_healths, player_skill, player_damage
-#     if current_pressed_enemy is None:
-#         print("No enemy selected!")
-#         return
-    
-#     enemy_health = enemy_healths.get(current_pressed_enemy)
-#     if enemy_health is None:
-#         print("Selected enemy does not have recorded health!")
-#         return
-
-#     enemy_health -= player_damage
-#     if enemy_health <= 0:
-#         enemy_health = 0
-#         stop_auto_attack() 
-#         enemy_index = list(enemy_healths).index(current_pressed_enemy) + 1
-#         skill_increase = max(enemy_index, round(0.01 * enemy_healths[current_pressed_enemy]))
-#         player_skill += skill_increase
-#         print(f"New player skill after defeating enemy: {player_skill}")
-#         player_damage = player_skill * 1
-#         update_skill_value()
-#         current_pressed_enemy.unbind("<Button-1>")
-#     else:
-#         enemy_healths[current_pressed_enemy] = enemy_health
-    
-#     update_enemy_health_display(enemy_health)
 
 def highlight_enemy(event):
     global current_pressed_enemy, health_bar, health_label
@@ -191,38 +145,24 @@ def create_game_layout_with_progression():
     skill_names = ["attack"]
     skill_values = [player_skill]
 
-    # def reset_enemy_healths():
-    #     global enemy_healths, current_pressed_enemy, health_bar, health_label, bottom_bar
+def reset_enemy_healths():
+    global enemy_healths, current_pressed_enemy, health_bar, health_label, max_health
 
-    #     enemy_healths_value = 250
-    #     for canvas in enemy_healths:
-    #         enemy_healths[canvas] = round(enemy_healths_value)
-    #         enemy_healths_value *= 2.5
-    #         canvas.bind("<Button-1>", highlight_enemy)
-        
-    #     if current_pressed_enemy:
-    #         enemy_health = enemy_healths.get(current_pressed_enemy)
-    #     if enemy_health:
-    #         health_bar_width = bottom_bar.winfo_width()  
-    #         health_bar.place(x=0, y=0, width=health_bar_width, height=bottom_bar.winfo_height())
-    #         health_label.config(text=str(enemy_health))
-    #         health_label.place(relx=0.5, rely=0.5, anchor='center')
+    enemy_healths_value = 250
+    max_health = 0  # Initialize max_health
+    for canvas in enemy_healths:
+        canvas.config(highlightbackground="white", highlightthickness=1)
+        enemy_healths[canvas] = round(enemy_healths_value)
+        if enemy_healths_value > max_health:  # Update max_health if necessary
+            max_health = enemy_healths_value
+        canvas.bind("<Button-1>", highlight_enemy)
+        enemy_healths_value *= 2.5
 
-    def reset_enemy_healths():
-        global enemy_healths, current_pressed_enemy, health_bar, health_label
+    if current_pressed_enemy:
+        current_pressed_enemy.config(highlightbackground="white", highlightthickness=1)
+        current_pressed_enemy = None
 
-        enemy_healths_value = 250
-        for canvas in enemy_healths:
-            canvas.config(highlightbackground="white", highlightthickness=1)
-            enemy_healths[canvas] = round(enemy_healths_value)
-            canvas.bind("<Button-1>", highlight_enemy)
-            enemy_healths_value *= 2.5
-
-        if current_pressed_enemy:
-            current_pressed_enemy.config(highlightbackground="white", highlightthickness=1)
-            current_pressed_enemy = None
-
-        update_enemy_health_display(0)  # Reset display
+    update_enemy_health_display(0) 
 
 
     reset_button = tk.Button(root, text="RESET", bg="orange", command=reset_enemy_healths, font=("Arial", 16), padx=-9, anchor="e")
@@ -238,8 +178,6 @@ def create_game_layout_with_progression():
         button.pack(pady=5)
         button.bind("<Button-1>", sidebar_button_click)
         skill_buttons.append(button)
-
-
 
 
     def highlight_enemy(event):
