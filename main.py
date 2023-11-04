@@ -11,16 +11,16 @@ skill_buttons = []
 root = None
 attack_button = None        
 
-def sidebar_button_click(event):
-    global current_pressed_sidebar_button
+        current_pressed_sidebar_button = button
 
-    if current_pressed_sidebar_button:
-        current_pressed_sidebar_button.config(background="SystemButtonFace")
-    
-    button = event.widget
-    button.config(background="green")
+    def update_skill_value(self):
+        global skill_buttons  
+        print(f"Updating skill to: {player_skill}")
+        if skill_buttons: 
+            skill_buttons[0].config(text=f"Attack ({player_skill})")
+        else:
+            print("Skill buttons have not been created yet.")
 
-    current_pressed_sidebar_button = button
 
 def update_skill_value():
     global skill_buttons  
@@ -121,6 +121,9 @@ def create_game_layout_with_progression():
     player_skill = 1
     player_damage = player_skill
 
+    left_sidebar = ttk.Frame(root, width=150, relief="groove", padding=5)
+    left_sidebar.grid(row=1, column=0, rowspan=2, sticky="ns")
+
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
 
@@ -139,10 +142,10 @@ def create_game_layout_with_progression():
     style.configure('TFrame', background='#FCE6C9')
     style.configure('TButton', background='#FCE6C9', foreground='black')
 
-    left_sidebar = ttk.Frame(root, width=150, relief="groove", padding=5)
-    left_sidebar.grid(row=1, column=0, rowspan=2, sticky="ns")
+    # left_sidebar = ttk.Frame(root, width=150, relief="groove", padding=5)
+    # left_sidebar.grid(row=1, column=0, rowspan=2, sticky="ns")
 
-    skill_names = ["attack"]
+    skill_names = ["attack"]  # Add other skill names to the list
     skill_values = [player_skill]
 
 
