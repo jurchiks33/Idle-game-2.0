@@ -65,7 +65,7 @@ def attack_enemy():
         enemy_index = list(enemy_healths).index(current_pressed_enemy) + 1
         
         # Use the max health from enemy_max_healths
-        max_health = enemy_max_healths[current_pressed_enemy]
+        max_health = enemy_healths[current_pressed_enemy] if current_pressed_enemy in enemy_healths else 0
 
         skill_increase = max(enemy_index, round(0.01 * max_health))
         player_skill += skill_increase
@@ -113,9 +113,16 @@ def stop_auto_attack():
         auto_attack_id = None
 
 def create_game_layout_with_progression():
+    global current_pressed_enemy, enemy_healths, enemy_max_healths, player_skill, player_damage
     global skill_buttons, root, bottom_bar, health_bar, health_label, enemy_healths, max_health
     global current_pressed_sidebar_button, player_skill, player_damage, attack_button
     
+    enemy_max_healths = {}
+    enemy_max_healths_value = 250  # Starting value for max health
+    for canvas in enemy_healths:
+        enemy_max_healths[canvas] = enemy_max_healths_value
+        enemy_max_healths_value *= 2.5
+
     root = tk.Tk()
     root.title("Game Layout")
     root.geometry("1050x800")
