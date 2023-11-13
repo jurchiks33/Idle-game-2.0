@@ -48,7 +48,7 @@ def highlight_enemy(event):
         update_enemy_health_display(enemy_health)
 
 def attack_enemy():
-    global current_pressed_enemy, enemy_healths, player_skill, player_damage
+    global current_pressed_enemy, enemy_healths, enemy_max_healths, player_skill, player_damage
     if current_pressed_enemy is None:
         print("No enemy selected!")
         return
@@ -61,8 +61,12 @@ def attack_enemy():
     enemy_health -= player_damage
     if enemy_health <= 0:
         enemy_health = 0
-        stop_auto_attack() 
+        stop_auto_attack()
         enemy_index = list(enemy_healths).index(current_pressed_enemy) + 1
+        
+        # Use the max health from enemy_max_healths
+        max_health = enemy_max_healths[current_pressed_enemy]
+
         skill_increase = max(enemy_index, round(0.01 * max_health))
         player_skill += skill_increase
         print(f"New player skill after defeating enemy: {player_skill}")
@@ -136,12 +140,6 @@ def create_game_layout_with_progression():
     # Define skill names and values
     skill_names = ["attack"]
     skill_values = [player_skill]
-    skill_buttons = []
-    for i, (skill_name, skill_value) in enumerate(zip(skill_names, skill_values)):
-        button_text = f"{skill_name} ({skill_value})"
-        button = tk.Button(left_sidebar, text=button_text, width=25)
-        button.pack(pady=5)
-        skill_buttons.append(button)
 
     # Bottom bar setup
     bottom_bar = ttk.Frame(root, height=50, relief="groove", padding=5)
@@ -177,9 +175,6 @@ def create_game_layout_with_progression():
 
     reset_button = tk.Button(root, text="RESET", bg="orange", command=reset_enemy_healths, font=("Arial", 16), padx=-9, anchor="e")
     reset_button.place(relx=1.0, rely=1.0, anchor="se", x=0, y=0)
-
-    # attack_button = tk.Button(root, text="Attack", bg="green", command=toggle_auto_attack, font=("Arial", 16))
-    # attack_button.place(relx=0.01, rely=0.01, anchor="nw")
 
     skill_buttons = []
     for i, (skill_name, skill_value) in enumerate(zip(skill_names, skill_values)):
