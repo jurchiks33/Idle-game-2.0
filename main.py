@@ -48,7 +48,7 @@ def highlight_enemy(event):
         update_enemy_health_display(enemy_health)
 
 def attack_enemy():
-    global current_pressed_enemy, enemy_healths, enemy_max_healths, player_skill, player_damage
+    global current_pressed_enemy, enemy_healths, player_skill, player_damage
     if current_pressed_enemy is None:
         print("No enemy selected!")
         return
@@ -61,12 +61,8 @@ def attack_enemy():
     enemy_health -= player_damage
     if enemy_health <= 0:
         enemy_health = 0
-        stop_auto_attack()
+        stop_auto_attack() 
         enemy_index = list(enemy_healths).index(current_pressed_enemy) + 1
-        
-        # Use the max health from enemy_max_healths
-        max_health = enemy_healths[current_pressed_enemy] if current_pressed_enemy in enemy_healths else 0
-
         skill_increase = max(enemy_index, round(0.01 * max_health))
         player_skill += skill_increase
         print(f"New player skill after defeating enemy: {player_skill}")
@@ -113,10 +109,9 @@ def stop_auto_attack():
         auto_attack_id = None
 
 def create_game_layout_with_progression():
-    global current_pressed_enemy, enemy_healths, enemy_max_healths, player_skill, player_damage
-    global skill_buttons, root, bottom_bar, health_bar, health_label, max_health
+    global skill_buttons, root, bottom_bar, health_bar, health_label, enemy_healths, max_health
     global current_pressed_sidebar_button, player_skill, player_damage, attack_button
-
+    
     root = tk.Tk()
     root.title("Game Layout")
     root.geometry("1050x800")
@@ -134,22 +129,6 @@ def create_game_layout_with_progression():
     style.configure("TEntry", font=('Helvetica', 12), padding=10)
     style.configure("TLabel", font=('Helvetica', 14), background='light gray')
 
-    # Initialize enemy healths
-    enemy_healths = {}
-    enemy_max_healths = {}
-    enemy_healths_value = 250  # Starting value for health
-    
-    
-    for i, enemy_image in enumerate(enemy_images):
-        canvas = tk.Canvas(main_content, width=size[0], height=size[1], bd=0, highlightthickness=1)
-        canvas.create_image(size[0]//2, size[1]//2, image=enemy_image)
-        canvas.grid(row=(i // 5) + 1, column=i % 5, padx=10, pady=10)
-        
-        # Initialize healths
-        enemy_healths[canvas] = enemy_healths_value
-        enemy_max_healths[canvas] = enemy_healths_value
-        enemy_healths_value *= 2.5
-
     # Left sidebar setup
     left_sidebar = ttk.Frame(root, width=150, relief="groove", padding=5)
     left_sidebar.grid(row=1, column=0, rowspan=2, sticky="ns")
@@ -157,6 +136,7 @@ def create_game_layout_with_progression():
     # Define skill names and values
     skill_names = ["attack"]
     skill_values = [player_skill]
+
 
     # Bottom bar setup
     bottom_bar = ttk.Frame(root, height=50, relief="groove", padding=5)
@@ -192,6 +172,9 @@ def create_game_layout_with_progression():
 
     reset_button = tk.Button(root, text="RESET", bg="orange", command=reset_enemy_healths, font=("Arial", 16), padx=-9, anchor="e")
     reset_button.place(relx=1.0, rely=1.0, anchor="se", x=0, y=0)
+
+    # attack_button = tk.Button(root, text="Attack", bg="green", command=toggle_auto_attack, font=("Arial", 16))
+    # attack_button.place(relx=0.01, rely=0.01, anchor="nw")
 
     skill_buttons = []
     for i, (skill_name, skill_value) in enumerate(zip(skill_names, skill_values)):
@@ -252,53 +235,39 @@ def create_game_layout_with_progression():
     health_bar = tk.Canvas(bottom_bar, bg="red", bd=0, highlightthickness=0)
     health_label = ttk.Label(bottom_bar, font=("Arial", 14), background="red", foreground="white")
 
-    # enemy_image_paths = [
-    #     "pictures/enemy1.jpg",
-    #     "pictures/enemy2.jpg",
-    #     "pictures/enemy3.jpg",
-    #     "pictures/enemy4.jpg",
-    #     "pictures/enemy5.jpg",
-    #     "pictures/enemy6.jpg",
-    #     "pictures/enemy7.jpg",
-    #     "pictures/enemy8.jpg",
-    #     "pictures/enemy9.jpg",
-    #     "pictures/enemy10.jpg",
-    #     "pictures/enemy11.jpg",
-    #     "pictures/enemy12.jpg",
-    #     "pictures/enemy13.jpg",
-    #     "pictures/enemy14.jpg",
-    #     "pictures/enemy15.jpg",
-    # ]
-
-    # for i, enemy_image in enumerate(enemy_images):
-    #     canvas = tk.Canvas(main_content, width=size[0], height=size[1], bd=0, highlightthickness=1)
-    #     canvas.create_image(size[0]//2, size[1]//2, image=enemy_image)
-    #     canvas.grid(row=(i // 5) + 1, column=i % 5, padx=10, pady=10)
-        
-    #     # Initialize healths
-    #     enemy_healths[canvas] = enemy_healths_value
-    #     enemy_max_healths[canvas] = enemy_healths_value
-    #     enemy_healths_value *= 2.5
+    enemy_image_paths = [
+        "pictures/enemy1.jpg",
+        "pictures/enemy2.jpg",
+        "pictures/enemy3.jpg",
+        "pictures/enemy4.jpg",
+        "pictures/enemy5.jpg",
+        "pictures/enemy6.jpg",
+        "pictures/enemy7.jpg",
+        "pictures/enemy8.jpg",
+        "pictures/enemy9.jpg",
+        "pictures/enemy10.jpg",
+        "pictures/enemy11.jpg",
+        "pictures/enemy12.jpg",
+        "pictures/enemy13.jpg",
+        "pictures/enemy14.jpg",
+        "pictures/enemy15.jpg",
+    ]
 
     cm_to_pixel = 37.8
     size = (int(3.5 * cm_to_pixel), int(4 * cm_to_pixel))
 
     enemy_images = [ImageTk.PhotoImage(Image.open(image_path).resize(size)) for image_path in enemy_image_paths]
 
+    enemy_healths = {}
+    enemy_healths_value = 250
     for i, enemy_image in enumerate(enemy_images):
         canvas = tk.Canvas(main_content, width=size[0], height=size[1], bd=0, highlightthickness=1)
         canvas.create_image(size[0]//2, size[1]//2, image=enemy_image)
         canvas.grid(row=(i // 5) + 1, column=i % 5, padx=10, pady=10)
-        
-        # Initialize healths
-        enemy_healths[canvas] = enemy_healths_value
-        enemy_max_healths[canvas] = enemy_healths_value
-        enemy_healths_value *= 2.5
+        canvas.bind("<Button-1>", highlight_enemy)
 
-# Initialize enemy_max_healths with the same values as enemy_healths
-enemy_max_healths = {}
-for canvas in enemy_healths:
-    enemy_max_healths[canvas] = enemy_healths[canvas]
+        enemy_healths[canvas] = round(enemy_healths_value)
+        enemy_healths_value *= 2.5
 
     root.grid_rowconfigure(1, weight=1)
     root.grid_columnconfigure(1, weight=1)
