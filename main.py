@@ -109,41 +109,53 @@ def stop_auto_attack():
         auto_attack_id = None
 
 def create_game_layout_with_progression():
-    global skill_buttons
-    global root
-    root =tk.Tk()
+    global skill_buttons, root, bottom_bar, health_bar, health_label, enemy_healths, max_health
+    global current_pressed_sidebar_button, player_skill, player_damage, attack_button
+    
+    root = tk.Tk()
     root.title("Game Layout")
     root.geometry("1050x800")
 
-    global bottom_bar, health_bar, health_label, enemy_healths, max_health, current_pressed_sidebar_button  
-    global player_skill, player_damage
-    
-    player_skill = 1
-    player_damage = player_skill
-
+    # Calculate screen width and height
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
-
-    x_coordinate = (screen_width / 2) - (1000 / 2)
-    y_coordinate = (screen_height / 2) - (1000 / 2)
-
+    x_coordinate = (screen_width / 2) - (1050 / 2)
+    y_coordinate = (screen_height / 2) - (800 / 2)
     root.geometry(f"+{int(x_coordinate)}+{int(y_coordinate)}")
 
+    # Set up the style
+    style = ttk.Style()
+    style.configure("TButton", font=('Helvetica', 12), borderwidth='4')
+    style.configure("TEntry", font=('Helvetica', 12), padding=10)
+    style.configure("TLabel", font=('Helvetica', 14), background='light gray')
+
+    # Left sidebar setup
+    left_sidebar = ttk.Frame(root, width=150, relief="groove", padding=5)
+    left_sidebar.grid(row=1, column=0, rowspan=2, sticky="ns")
+
+    # Define skill names and values
+    skill_names = ["attack"]
+    skill_values = [player_skill]
+    skill_buttons = []
+    for i, (skill_name, skill_value) in enumerate(zip(skill_names, skill_values)):
+        button_text = f"{skill_name} ({skill_value})"
+        button = tk.Button(left_sidebar, text=button_text, width=25)
+        button.pack(pady=5)
+        skill_buttons.append(button)
+
+    # Bottom bar setup
     bottom_bar = ttk.Frame(root, height=50, relief="groove", padding=5)
-    bottom_bar.grid(row=2, column=1, sticky="ew")
+    bottom_bar.grid(row=2, column=0, columnspan=3, sticky="ew")
     ttk.Button(bottom_bar, text="Auto Attack", command=start_auto_attack).pack(side="left", padx=20)
     ttk.Button(bottom_bar, text="Stop Auto Attack", command=stop_auto_attack).pack(side="left", padx=20)
     ttk.Label(bottom_bar, text="Notification/Controls").pack(pady=5)
 
-    style = ttk.Style()
-    style.configure('TFrame', background='#FCE6C9')
-    style.configure('TButton', background='#FCE6C9', foreground='black')
+    # Health bar and label setup
+    health_bar = tk.Canvas(bottom_bar, bg="red", bd=0, highlightthickness=0)
+    health_label = ttk.Label(bottom_bar, font=("Arial", 14), background="red", foreground="white")
 
-    left_sidebar = ttk.Frame(root, width=150, relief="groove", padding=5)
-    left_sidebar.grid(row=1, column=0, rowspan=2, sticky="ns")
-
-    skill_names = ["attack"]
-    skill_values = [player_skill]
+    attack_button = tk.Button(root, text="Attack", bg="green", command=toggle_auto_attack, font=("Arial", 16))
+    attack_button.place(relx=0, rely=1.0, x=10, y=-50, anchor="sw")
 
 
     def reset_enemy_healths():
