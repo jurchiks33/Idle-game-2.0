@@ -178,8 +178,8 @@ def create_game_layout_with_progression():
     reset_button = tk.Button(root, text="RESET", bg="orange", command=reset_enemy_healths, font=("Arial", 16), padx=-9, anchor="e")
     reset_button.place(relx=1.0, rely=1.0, anchor="se", x=0, y=0)
 
-    attack_button = tk.Button(root, text="Attack", bg="green", command=toggle_auto_attack, font=("Arial", 16))
-    attack_button.place(relx=0.01, rely=0.01, anchor="nw")
+    # attack_button = tk.Button(root, text="Attack", bg="green", command=toggle_auto_attack, font=("Arial", 16))
+    # attack_button.place(relx=0.01, rely=0.01, anchor="nw")
 
     skill_buttons = []
     for i, (skill_name, skill_value) in enumerate(zip(skill_names, skill_values)):
